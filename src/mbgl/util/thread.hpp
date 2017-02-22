@@ -47,11 +47,39 @@ public:
     // Invoke object->fn(args...) asynchronously, but wait for the result.
     template <typename Fn, class... Args>
     auto invokeSync(Fn fn, Args&&... args) {
+        assert(!paused);
+
         using R = std::result_of_t<Fn(Object, Args&&...)>;
         std::packaged_task<R ()> task(std::bind(fn, object, args...));
         std::future<R> future = task.get_future();
         loop->invoke(std::move(task));
         return future.get();
+    }
+
+    void pause() {
+        assert(!paused);
+
+        paused = std::make_unique<std::promise<void>>();
+        resumed = std::make_unique<std::promise<void>>();
+
+        auto pausing = paused->get_future();
+
+        loop->invoke([this] {
+            auto resuming = resumed->get_future();
+            paused->set_value();
+            resuming.get();
+        });
+
+        pausing.get();
+    }
+
+    void resume() {
+        assert(paused);
+
+        resumed->set_value();
+
+        resumed.reset();
+        paused.reset();
     }
 
 private:
@@ -72,6 +100,9 @@ private:
 
     std::promise<void> running;
     std::promise<void> joinable;
+
+    std::unique_ptr<std::promise<void>> paused;
+    std::unique_ptr<std::promise<void>> resumed;
 
     std::thread thread;
 
