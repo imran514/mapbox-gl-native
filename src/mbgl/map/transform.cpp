@@ -361,18 +361,18 @@ void Transform::setLatLng(const LatLng& latLng, optional<ScreenCoordinate> ancho
     easeTo(camera, duration);
 }
 
-void Transform::setLatLngZoom(const LatLng& latLng, double zoom, const Duration& duration) {
-    setLatLngZoom(latLng, zoom, EdgeInsets {}, duration);
+void Transform::setLatLngZoom(const LatLng& latLng, double zoom, const AnimationOptions& animation) {
+    setLatLngZoom(latLng, zoom, EdgeInsets {}, animation);
 }
 
-void Transform::setLatLngZoom(const LatLng& latLng, double zoom, optional<EdgeInsets> padding, const Duration& duration) {
+void Transform::setLatLngZoom(const LatLng& latLng, double zoom, optional<EdgeInsets> padding, const AnimationOptions& animation) {
     if (!latLng || std::isnan(zoom)) return;
 
     CameraOptions camera;
     camera.center = latLng;
     camera.padding = padding;
     camera.zoom = zoom;
-    easeTo(camera, duration);
+    easeTo(camera, animation);
 }
 
 LatLng Transform::getLatLng(optional<EdgeInsets> padding) const {
@@ -394,26 +394,26 @@ ScreenCoordinate Transform::getScreenCoordinate(optional<EdgeInsets> padding) co
 
 #pragma mark - Zoom
 
-void Transform::scaleBy(double ds, const Duration& duration) {
-    scaleBy(ds, optional<ScreenCoordinate> {}, duration);
+void Transform::scaleBy(double ds, const AnimationOptions& animation) {
+    scaleBy(ds, optional<ScreenCoordinate> {}, animation);
 }
 
-void Transform::scaleBy(double ds, optional<ScreenCoordinate> anchor, const Duration& duration) {
+void Transform::scaleBy(double ds, optional<ScreenCoordinate> anchor, const AnimationOptions& animation) {
     if (std::isnan(ds)) return;
     double scale = util::clamp(state.scale * ds, state.min_scale, state.max_scale);
-    setScale(scale, anchor, duration);
+    setScale(scale, anchor, animation);
 }
 
-void Transform::setZoom(double zoom, const Duration& duration) {
-    setZoom(zoom, optional<ScreenCoordinate> {}, duration);
+void Transform::setZoom(double zoom, const AnimationOptions& animation) {
+    setZoom(zoom, optional<ScreenCoordinate> {}, animation);
 }
 
-void Transform::setZoom(double zoom, optional<ScreenCoordinate> anchor, const Duration& duration) {
-    setScale(state.zoomScale(zoom), anchor, duration);
+void Transform::setZoom(double zoom, optional<ScreenCoordinate> anchor, const AnimationOptions& animation) {
+    setScale(state.zoomScale(zoom), anchor, animation);
 }
 
-void Transform::setZoom(double zoom, optional<EdgeInsets> padding, const Duration& duration) {
-    setScale(state.zoomScale(zoom), padding, duration);
+void Transform::setZoom(double zoom, optional<EdgeInsets> padding, const AnimationOptions& animation) {
+    setScale(state.zoomScale(zoom), padding, animation);
 }
 
 double Transform::getZoom() const {
@@ -424,22 +424,22 @@ double Transform::getScale() const {
     return state.scale;
 }
 
-void Transform::setScale(double scale, const Duration& duration) {
-    setScale(scale, optional<ScreenCoordinate> {}, duration);
+void Transform::setScale(double scale, const AnimationOptions& animation) {
+    setScale(scale, optional<ScreenCoordinate> {}, animation);
 }
 
-void Transform::setScale(double scale, optional<ScreenCoordinate> anchor, const Duration& duration) {
+void Transform::setScale(double scale, optional<ScreenCoordinate> anchor, const AnimationOptions& animation) {
     if (std::isnan(scale)) return;
     CameraOptions camera;
     camera.zoom = state.scaleZoom(scale);
     camera.anchor = anchor;
-    easeTo(camera, duration);
+    easeTo(camera, animation);
 }
 
-void Transform::setScale(double scale, optional<EdgeInsets> padding, const Duration& duration) {
+void Transform::setScale(double scale, optional<EdgeInsets> padding, const AnimationOptions& animation) {
     optional<ScreenCoordinate> anchor;
     if (padding) anchor = getScreenCoordinate(padding);
-    setScale(scale, anchor, duration);
+    setScale(scale, anchor, animation);
 }
 
 void Transform::setMinZoom(const double minZoom) {

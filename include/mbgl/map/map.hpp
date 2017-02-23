@@ -95,15 +95,15 @@ public:
     void resetPosition(optional<EdgeInsets> = {});
 
     // Scale
-    void scaleBy(double ds, optional<ScreenCoordinate> = {}, const Duration& = Duration::zero());
-    void setScale(double scale, optional<ScreenCoordinate> = {}, const Duration& = Duration::zero());
+    void scaleBy(double ds, optional<ScreenCoordinate> = {}, const AnimationOptions& = {});
+    void setScale(double scale, optional<ScreenCoordinate> = {}, const AnimationOptions& = {});
     double getScale() const;
-    void setZoom(double zoom, const Duration& = Duration::zero());
-    void setZoom(double zoom, optional<ScreenCoordinate>, const Duration& = Duration::zero());
-    void setZoom(double zoom, optional<EdgeInsets>, const Duration& = Duration::zero());
+    void setZoom(double zoom, const AnimationOptions& = {});
+    void setZoom(double zoom, optional<ScreenCoordinate>, const AnimationOptions& = {});
+    void setZoom(double zoom, optional<EdgeInsets>, const AnimationOptions& = {});
     double getZoom() const;
-    void setLatLngZoom(const LatLng&, double zoom, const Duration& = Duration::zero());
-    void setLatLngZoom(const LatLng&, double zoom, optional<EdgeInsets>, const Duration& = Duration::zero());
+    void setLatLngZoom(const LatLng&, double zoom, const AnimationOptions& = {});
+    void setLatLngZoom(const LatLng&, double zoom, optional<EdgeInsets>, const AnimationOptions& = {});
     CameraOptions cameraForLatLngBounds(const LatLngBounds&, optional<EdgeInsets>) const;
     CameraOptions cameraForLatLngs(const std::vector<LatLng>&, optional<EdgeInsets>) const;
     void resetZoom();

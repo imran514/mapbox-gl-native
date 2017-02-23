@@ -558,7 +558,9 @@ void nativeScaleBy(JNIEnv *env, jni::jobject* obj, jlong nativeMapViewPtr, jdoub
     assert(nativeMapViewPtr != 0);
     NativeMapView *nativeMapView = reinterpret_cast<NativeMapView *>(nativeMapViewPtr);
     mbgl::ScreenCoordinate center(cx, cy);
-    nativeMapView->getMap().scaleBy(ds, center, mbgl::Milliseconds(duration));
+    mbgl::AnimationOptions animationOptions;
+    animationOptions.duration.emplace(mbgl::Milliseconds(duration));
+    nativeMapView->getMap().scaleBy(ds, center, animationOptions);
 }
 
 void nativeSetScale(JNIEnv *env, jni::jobject* obj, jlong nativeMapViewPtr, jdouble scale,
@@ -566,7 +568,9 @@ void nativeSetScale(JNIEnv *env, jni::jobject* obj, jlong nativeMapViewPtr, jdou
     assert(nativeMapViewPtr != 0);
     NativeMapView *nativeMapView = reinterpret_cast<NativeMapView *>(nativeMapViewPtr);
     mbgl::ScreenCoordinate center(cx, cy);
-    nativeMapView->getMap().setScale(scale, center, mbgl::Milliseconds(duration));
+    mbgl::AnimationOptions animationOptions;
+    animationOptions.duration.emplace(mbgl::Milliseconds(duration));
+    nativeMapView->getMap().setScale(scale, center, animationOptions);
 }
 
 jdouble nativeGetScale(JNIEnv *env, jni::jobject* obj, jlong nativeMapViewPtr) {
@@ -578,7 +582,9 @@ jdouble nativeGetScale(JNIEnv *env, jni::jobject* obj, jlong nativeMapViewPtr) {
 void nativeSetZoom(JNIEnv *env, jni::jobject* obj, jlong nativeMapViewPtr, jdouble zoom, jlong duration) {
     assert(nativeMapViewPtr != 0);
     NativeMapView *nativeMapView = reinterpret_cast<NativeMapView *>(nativeMapViewPtr);
-    nativeMapView->getMap().setZoom(zoom, mbgl::Milliseconds(duration));
+    mbgl::AnimationOptions animationOptions;
+    animationOptions.duration.emplace(mbgl::Milliseconds(duration));
+    nativeMapView->getMap().setZoom(zoom, animationOptions);
 }
 
 jdouble nativeGetZoom(JNIEnv *env, jni::jobject* obj, jlong nativeMapViewPtr) {

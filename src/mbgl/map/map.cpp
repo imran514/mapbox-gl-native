@@ -520,15 +520,15 @@ void Map::resetPosition(optional<EdgeInsets> padding) {
 
 #pragma mark - Scale
 
-void Map::scaleBy(double ds, optional<ScreenCoordinate> anchor, const Duration& duration) {
+void Map::scaleBy(double ds, optional<ScreenCoordinate> anchor, const AnimationOptions& animation) {
     impl->cameraMutated = true;
-    impl->transform.scaleBy(ds, anchor, duration);
+    impl->transform.scaleBy(ds, anchor, animation);
     impl->onUpdate(Update::RecalculateStyle);
 }
 
-void Map::setScale(double scale, optional<ScreenCoordinate> anchor, const Duration& duration) {
+void Map::setScale(double scale, optional<ScreenCoordinate> anchor, const AnimationOptions& animation) {
     impl->cameraMutated = true;
-    impl->transform.setScale(scale, anchor, duration);
+    impl->transform.setScale(scale, anchor, animation);
     impl->onUpdate(Update::RecalculateStyle);
 }
 
@@ -536,20 +536,20 @@ double Map::getScale() const {
     return impl->transform.getScale();
 }
 
-void Map::setZoom(double zoom, const Duration& duration) {
+void Map::setZoom(double zoom, const AnimationOptions& animation) {
     impl->cameraMutated = true;
-    setZoom(zoom, optional<EdgeInsets> {}, duration);
+    setZoom(zoom, optional<EdgeInsets> {}, animation);
 }
 
-void Map::setZoom(double zoom, optional<ScreenCoordinate> anchor, const Duration& duration) {
+void Map::setZoom(double zoom, optional<ScreenCoordinate> anchor, const AnimationOptions& animation) {
     impl->cameraMutated = true;
-    impl->transform.setZoom(zoom, anchor, duration);
+    impl->transform.setZoom(zoom, anchor, animation);
     impl->onUpdate(Update::RecalculateStyle);
 }
 
-void Map::setZoom(double zoom, optional<EdgeInsets> padding, const Duration& duration) {
+void Map::setZoom(double zoom, optional<EdgeInsets> padding, const AnimationOptions& animation) {
     impl->cameraMutated = true;
-    impl->transform.setZoom(zoom, padding, duration);
+    impl->transform.setZoom(zoom, padding, animation);
     impl->onUpdate(Update::RecalculateStyle);
 }
 
@@ -557,14 +557,14 @@ double Map::getZoom() const {
     return impl->transform.getZoom();
 }
 
-void Map::setLatLngZoom(const LatLng& latLng, double zoom, const Duration& duration) {
+void Map::setLatLngZoom(const LatLng& latLng, double zoom, const AnimationOptions& animation) {
     impl->cameraMutated = true;
-    setLatLngZoom(latLng, zoom, {}, duration);
+    setLatLngZoom(latLng, zoom, {}, animation);
 }
 
-void Map::setLatLngZoom(const LatLng& latLng, double zoom, optional<EdgeInsets> padding, const Duration& duration) {
+void Map::setLatLngZoom(const LatLng& latLng, double zoom, optional<EdgeInsets> padding, const AnimationOptions& animation) {
     impl->cameraMutated = true;
-    impl->transform.setLatLngZoom(latLng, zoom, padding, duration);
+    impl->transform.setLatLngZoom(latLng, zoom, padding, animation);
     impl->onUpdate(Update::RecalculateStyle);
 }
 
